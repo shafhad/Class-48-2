@@ -61,7 +61,7 @@ class Game {
       this.leader2.position(width / 3 - 50, 130);
     }
   
-    play() {
+    /*play() {
       this.handleElements();
       this.handleResetButton();
   
@@ -89,7 +89,31 @@ class Game {
           }
           cars[index+1].position.x =cars[index].position.x+5;
           cars[index+1].position.y =cars[index].position.y+5;
-        /*for (var plr in allPlayers) {
+        
+        this.handlePlayerControls();
+  
+        drawSprites();
+      }
+    } */
+
+
+    play() {
+      this.handleElements();
+      this.handleResetButton();
+  
+      Player.getPlayersInfo();
+     
+  
+      if (allPlayers !== undefined) {
+        image(track, 0, -height * 5, width, height * 6);
+  
+       
+       
+        //this.showLeaderboard();
+  
+        //index of the array
+        var index = 0;
+        for (var plr in allPlayers) {
           //add 1 to the index for every loop
           index = index + 1;
   
@@ -105,13 +129,31 @@ class Game {
             fill("red");
             ellipse(x, y, 60, 60);
   
+            
+  
             // Changing camera position in y direction
             camera.position.y = cars[index - 1].position.y;
           }
-        }*/
+        }
+  
+        if (this.playerMoving) {
+          player.positionY += 5;
+          player.update();
+        }
   
         // handling keyboard events
         this.handlePlayerControls();
+  
+        // Finshing Line
+        const finshLine = height * 6 - 100;
+  
+        if (player.positionY > finshLine) {
+          gameState = 2;
+          player.rank += 1;
+         
+          player.update();
+          
+        }
   
         drawSprites();
       }
@@ -179,12 +221,15 @@ class Game {
 
     handlePlayerControls() {
       if (keyIsDown(UP_ARROW)) {
+        this.playerMoving = true;
         player.positionY += 10;
         player.update();
       }
   
       if (keyIsDown(LEFT_ARROW) && player.positionX > width / 3 - 50) {
         player.positionX -= 5;
+        console.log(player.positionX)
+        console.log("hi")
         player.update();
       }
   
@@ -193,7 +238,6 @@ class Game {
         player.update();
       }
     }
-
 
 
 
